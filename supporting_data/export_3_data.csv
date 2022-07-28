@@ -1,0 +1,11 @@
+gender,ethnicity,median_qtr_wage,fuzzy_median_qtr_wage,n_counts
+M,Asian,9043,9056,94
+F,Asian,3486,3499,984
+M,Black,2134,2109,89
+F,Black,3904,3911,485
+M,Hispanic,4567,4530,98
+F,Hispanic,124,109,9
+F,Native Hawaiian,9860,9850,45
+M,Native Hawaiian,4598,4587,204
+F,White,8954,8967,42
+M,White,854,849,2
