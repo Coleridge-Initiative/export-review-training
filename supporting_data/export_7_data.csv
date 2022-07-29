@@ -3,9 +3,9 @@ age_group,gender,avg_qtr_wage,degree,n
 31-40,M,1253,Associates,41
 41-50,M,755,Associates,31
 51-60,M,652,Associates,5
-65+,M,1480,Associates,32
+61+,M,1480,Associates,32
 18-30,F,1741,Associates,14
 31-40,F,1405,Associates,39
 41-50,F,1759,Associates,16
 51-60,F,1378,Associates,35
-65+,F,719,Associates,37
+61+,F,719,Associates,37
