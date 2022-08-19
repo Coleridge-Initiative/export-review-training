@@ -14658,11 +14658,15 @@ div.jp-OutputPrompt {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Expectations">Expectations<a class="anchor-link" href="#Expectations">&#182;</a></h1><p>At the conclusion of this training, you should be able to:</p>
 <ol>
-<li><p>Navigate the export application</p>
+<li><p>Navigating the export module inside the ADRF</p>
 </li>
-<li><p>Review export requests for disclosive information</p>
+<li><p>Identifying necessary documentation based on the type of export request</p>
 </li>
-<li><p>Assess complimentary disclosure risks</p>
+<li><p>Assessing files for primary, secondary, and complimentary disclosure</p>
+</li>
+<li><p>Reviewing code files</p>
+</li>
+<li><p>Communicating with end users about their export requests</p>
 </li>
 </ol>
 
@@ -14823,7 +14827,7 @@ div.jp-OutputPrompt {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Define-the-rules">Define the rules<a class="anchor-link" href="#Define-the-rules">&#182;</a></h1><ul>
+<h1 id="Define-the-Rules">Define the Rules<a class="anchor-link" href="#Define-the-Rules">&#182;</a></h1><ul>
 <li>General rules: No cell should have fewer than 10 observations unless otherwise designated. Always report the total number of observations.<ul>
 <li>Aggregation: If a table contains sensitive cells (i.e. fewer than 10 observations), users can aggregate (collapse) those categories. </li>
 </ul>
@@ -14832,6 +14836,19 @@ div.jp-OutputPrompt {
 <li>Secondary suppression: secondary suppression is the suppression of other cells or marginal totals in the table so that the suppressed cell(s) cannot be recalculated. </li>
 </ul>
 </li>
+<li>Industry level information presented for any geographic area must be redacted if a single employer makes up more than 80% of the employment for that industrial sector or less than 3 establishments. </li>
+</ul>
+
+</div>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Define-the-Rules">Define the Rules<a class="anchor-link" href="#Define-the-Rules">&#182;</a></h1><ul>
 <li>Percentages: Report the number for both the numerator and denominator. Output needs to be suppressed where either, or both, of the counts used to calculate the percentage, proportion, or ratio have been suppressed. Round percentages calculated from unweighted counts to 1 decimal place. Do not report 0 or 100%.</li>
 <li>Percentiles: Do not report exact percentiles. Users can calculate a fuzzy median by averaging the true 45 and 55 percentiles. This logic can be used when calculating any percentile. </li>
 <li>Maxima and Minima: Suppress maximum and minimum values in general. Top-coded values may be considered for release. </li>
@@ -19159,15 +19176,6 @@ class="
 </div>
 
 <div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>Saving 7 x 7 in image
-
-</pre>
-</div>
-</div>
 
 <div class="jp-OutputArea-child">
 
