@@ -1,4 +1,4 @@
-gender,avg_wage,count_ssn
-M,3500,10
-F,2500,5
-Total,3000,15
+gender,avg_wage,count_ssn,emp_count,avg_wage_rounded
+M,3523,10,9,3500
+F,2565,5,4,2600
+Total_Avg,3044,15,3,3000

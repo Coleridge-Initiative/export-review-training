@@ -1,0 +1,428 @@
+---
+title: "Secondary Reviewing Training"
+author: "[Coleridge Initiative](https://coleridgeinitiative.org/)"
+format: revealjs
+scrollable: true
+code-fold: true
+code-summary: "Show the code"
+editor: visual
+df-print: paged
+Rendering:
+  embed-resources: true
+---
+
+## Setting up R {visibility="hidden"}
+
+```{r, echo=FALSE}
+options(warn=-1)
+suppressMessages(library(tidyverse))
+suppressMessages(library(R.utils))
+suppressMessages(library(ggplot2))
+
+```
+
+## Expectations {.scrollable}
+
+At the conclusion of this training, you should be able to:
+
+1.  Navigating the export module inside the ADRF
+2.  Identifying necessary documentation based on the type of export request
+3.  Assessing files for primary, secondary, and complimentary disclosure
+4.  Reviewing code files
+5.  Communicating with end users about their export requests
+
+## Motivation and Outline {.scrollable}
+
+In this presentation, we will provide examples of common export requests using fake data and show you how to evaluate them in accordance with dataset-specific rules. You can apply the techniques you learn here to the files you review.
+
+1.  Describing an export request
+2.  Accessing export requests
+3.  How to assess files for disclosure review
+4.  Walk-through examples
+
+## What is an export request? {.scrollable}
+
+An export request occurs when an ADRF user correctly asks for a file to be moved from the ADRF to be used outside of it in the future. These files may encompass code files, graphical outputs, tabular data, or documents in Word format. Regardless of the file type, a thorough review is necessary to identify any information that could potentially disclose sensitive data, defined as any information that doesn't comply with our disclosure rules.
+
+## What's required in an export request? {.scrollable}
+
+1.  Export Files
+    -   The files you wish to have outside of the ADRF.
+2.  Export Files Documentation
+    -   These are the supplementary files containing the underlying counts, data, and code utilized in generating the export files.
+3.  Documentation Memo
+    -   Typically, this is a .txt or .doc file containing comprehensive information about each exported file and its associated files documentation for export.
+
+## ADRF User Guide and Video Walk-Through {.scrollable}
+
+```{=html}
+<html>
+  <head>
+    <title>ADRF User Guide</title>
+  </head>
+  <body>
+      <p>The
+      <a href="https://coleridgeinitiative.org/administrative-data-research-facility" target="_blank rel="noopener noreferrer">ADRF User Guide</a> on the right hand side of the page is a great reference for the export process or using the ADRF.
+  </body>
+</html>
+<br>
+
+Watch the <a href='https://youtu.be/qXG_i0v_bDQ'>Export Module Video Walk-through.</a>
+    </span> 
+```
+## How to review files? {.scrollable}
+
+1.  Examine the export data for completeness.
+    -   Review the accompanying documentation memo
+        -   Verify the presence of necessary supporting files with the export.
+        -   Assess whether the researcher has accurately described their cohort and output tables.
+        -   If any supporting files, documentation files, or export files are missing, return the export request to the researcher.
+2.  Scrutinize the files and their associated counts.
+    -   Inspect the underlying counts and ensure they meet the requirements for disclosure review.
+    -   Examine the methodology used to generate statistics, such as fuzzy percentiles, means, sums, etc.
+        -   Confirm the absence of data references in any code files.
+3.  Evaluate for potential complementary disclosure.
+    -   Determine whether any of the export files originate from the same cohort or multiple subsets.
+        -   If they do, assess the risk of complementary disclosure.
+
+## Understanding Complimentary Disclosure
+
+![](images/cd.png){fig-align="center"}
+
+## Export Module
+
+![](images/export_page.png){fig-align="center"}
+
+## Define the Rules {.scrollable}
+
+-   Each team will be able to export up to 10 figures/tables
+-   Every statistic for export must be based on at least 10 individuals and at least 3 employers (when using wage records)
+    -   Statistics that are based off of 0-10 individuals must be suppressed
+    -   Statistics that are based off of 0-2 employers must be suppressed
+-   All counts will need to be rounded
+    -   Counts below 1000 should be rounded to the nearest ten Counts greater than or equal to 1000 should be rounded to the nearest hundred For example, a count of 868 would be rounded to 870 and a count of 1868 would be rounded to 1900
+-   All reported wages will need to be rounded to the nearest hundred
+-   All reported averages will need to be rounded to the nearest hundredth
+-   All percentages and proportions need to be rounded
+    -   The same rounding rule that is applied to counts must be applied to both the numerator and denominator
+    -   Percentages must then be rounded to the nearest percent
+    -   Proportions must be rounded to the nearest hundredth
+-   Exact percentiles can not be exported
+    -   Instead, for example, you may calculate a "fuzzy median", by averaging the true 45th and 55th percentiles
+        -   If you are calculating the fuzzy percentiles for wage, you will need to round to the nearest hundred after calculating the fuzzy percentile
+        -   If you are calculating the fuzzy percentile for a number of individuals, you will need to round to the nearest 10 if the count is less than 1000 and to the nearest hundred if the count is greater than or equal to 1000
+-   Exact Maxima and Minima can not be exported
+    -   Suppress maximum and minimum values in general
+    -   You may replace an exact maximum or minimum with a top-coded value or a fuzzy maximum or minimum value. For example: If the maximum value for earnings is 154,325, it could be top-coded as '100,000+'. And a fuzzy maximum value could be:
+    
+$$
+\frac{95th\ percentile\ of\ earnings + 154325}{2}
+$$
+-   Complementary suppression
+    -   If your figures include totals or are dependent on a preceding or subsequent figures, you need to take into account complementary disclosure risks---that is, whether the figure totals or the separate figures when read together, might disclose information about less than 10 individuals in the data in a way that a single, simpler table would not. Team facilitators and export reviewers will work with you by offering guidance on implementing any necessary complementary suppression techniques
+
+## Export Example 1 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+```{r, echo=FALSE}
+avg_yearly_wage <- data.frame(avg_wage = c(39029, 40257, 56987, 75908, 89032),
+                              year = c(2015, 2016, 2017, 2018, 2019),
+                                          count_ssn = c(767, 890, 543, 987, 231),
+                              emp_count = c(34,12,99,54,87))
+```
+
+## Documentation Memo
+
+-   export_1.csv
+    -   Average yearly wages for individuals after receiving unemployment insurance
+    -   export_1_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+avg_yearly_wage %>% select(avg_wage, year) %>% write_csv("figures_for_export/export_1.csv")
+avg_yearly_wage %>% mutate(avg_wage_rounded = round(avg_wage, -2)) %>% select(avg_wage_rounded, year)
+
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+avg_yearly_wage %>% write_csv("supporting_data/export_1_data.csv")
+avg_yearly_wage %>% mutate(avg_wage_rounded = round(avg_wage, -2))
+
+```
+
+::: fragment
+We can release the requested table because all counts are greater than or equal to 10 and wages are rounded.
+:::
+
+## Export Example 2 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+```{r, echo=FALSE}
+avg_wage_by_gender <- data.frame(gender = c("M", "F", "Total_Avg"),
+                avg_wage = c(3523, 2565, 3044),
+               count_ssn = c(10,5,15),
+               emp_count = c(9, 4, 3))
+
+avg_wage_by_gender <- avg_wage_by_gender %>% mutate(avg_wage_rounded = round(avg_wage, -2))
+
+```
+
+## Documentation Memo
+
+-   export_2.png
+    -   average wage by gender for individuals after receiving unemployment insurance between the years 2010 and 2014.
+    -   export_2_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+ggplot(data=avg_wage_by_gender, aes(x=gender, y=avg_wage_rounded)) +
+    geom_bar(stat="identity") 
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+avg_wage_by_gender %>% write_csv("supporting_data/export_2_data.csv")
+avg_wage_by_gender
+
+```
+
+::: fragment
+This graph cannot be released. For this to pass disclosure review, we need to redact the `avg_wage_rounded` values for `F` and `Total_Avg`, or redact the `avg_wage_rounded` values for `M` and `F`.
+:::
+
+## Export Example 3 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+```{r, echo=FALSE}
+
+median <- data.frame(gender = c("M", "F", "M", "F", "M", "F", "M", "F", "M", "F"),
+                    ethnicity = c('Hispanic','Native Hawaiian', 'Asian', 'White', 'Black'),
+                    median_qtr_wage = c(4567, 9860, 9043, 8954, 2134, 124, 4598, 3486, 854, 3904),
+                    fuzzy_median_qtr_wage = c(4530, 9850, 9056, 8967, 2109, 109, 4587, 3499, 849, 3911),
+                    n_counts = c(98, 45, 94, 42, 89, 9, 204, 984, 2, 485),
+                    emp_counts = c(6, 9, 4, 3, 3, 5, 4, 87, 1, 90))
+median <- median %>% mutate(fuzzy_wage_rounded = round(fuzzy_median_qtr_wage, -2))
+```
+
+## Documentation Memo
+
+-   export_3.png
+    -   The fuzzy median wage for ethnicity broken down by gender. The column `n_counts` is the total distinct count of people in our cohort.
+    -   export_3_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+ggplot(data=median, aes(x=ethnicity, y=fuzzy_wage_rounded, fill=gender)) + 
+  geom_bar(position='dodge', stat='identity')
+
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+median %>% arrange(ethnicity) %>% write_csv("supporting_data/export_3_data.csv")
+median %>% arrange(ethnicity, gender) %>% mutate(fuzzy_wage_rounded_redacted = ifelse(n_counts < 10 | emp_counts < 3, NA, fuzzy_wage_rounded))
+```
+
+::: fragment
+As it currently is, this graph will not pass disclosure review because the `n_counts` and `emp_counts` are less than our threshold. We need to redact the `fuzzy_wage_rounded` values for Hispanic female and White male.
+:::
+
+## Export Example 4 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+```{r, echo=FALSE}
+over_time <- data.frame(year_qtr = c("2018 Q1", "2018 Q2", "2018 Q3", "2018 Q4", "2019 Q1"),
+                       count_ssn = c(22, 56, 75, 80, 102))
+
+over_time <- over_time %>% mutate(count_ssn_rounded = round(count_ssn, -1))
+```
+
+## Documentation Memo
+
+-   export_4.png
+    -   A cumulative count of individuals that ever earned a living wage from 2018 quarter 1 to 2019 quarter 1.
+    -   export_4_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+ggplot(data=over_time, aes(x=year_qtr, y=count_ssn_rounded, group=1)) +
+  geom_line() +
+    geom_point() +
+    labs(title="Cumulative Count of those that ever earned a living wage",
+        x ="Year and Quarter", y = "Count of Individuals")
+#ggsave("figures_for_export/export_5.png")
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+over_time %>% write_csv("supporting_data/export_5_data.csv")
+over_time
+```
+
+::: fragment
+This graph will not meet the criteria for disclosure review. As it represents a cumulative count, our attention should be directed towards the variations between quarters. Specifically, there is a difference of 5 between quarters 3 and 4 in 2018. We also need to confirm that the rounded counts created the graph. Also, since this depicts a count of those earning a living wage, we need to confirm 3 or more employers for each `year_qtr` combo.
+:::
+
+## Export Example 5 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+```{r, echo=FALSE}
+set.seed(109)
+age_total <- data.frame(age_group = c("18-30", "31-40", "41-50", "51-60", "61+"),
+                  gender = rep(c("M", "F"), each=5),
+                  #ethnicity = c('Hispanic','Native Hawaiian', 'Asian', 'White', 'Black'),
+                 avg_wage = sample(989:10000, 10, replace=TRUE),
+                 total_n = sample(50:1000, 10))
+
+age_total <- age_total %>% mutate(avg_wage_rounded = round(avg_wage,-2))
+
+
+
+set.seed(109)
+age_degree <- data.frame(age_group = c("18-30", "31-40", "41-50", "51-60", "61+"),
+                  gender = rep(c("M", "F"), each=5),
+                  #ethnicity = c('Hispanic','Native Hawaiian', 'Asian', 'White', 'Black'),
+                 avg_wage = sample(500:2000, 10, replace=TRUE),
+                  degree = c("Associates"),
+                 n = sample(1:50, 10))
+
+age_degree <- age_degree %>% mutate(avg_wage_rounded = round(avg_wage, -2))
+
+d <- age_total %>% mutate(total_n = total_n - 2)
+```
+
+## Documentation Memo
+
+-   export_5.png
+    -   Plotting the average wage by age group and gender. This export uses the same analytic frame as export_6.png.
+    -   export_5_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+
+ggplot(data = d, aes(x = age_group, y = avg_wage_rounded, fill=gender)) +
+    geom_bar(stat="identity", position = 'dodge') +
+    labs(title = "On average females in the 41-50 age group\n make $7858.00 less than their male counterparts")
+#ggsave("figures_for_export/export_6.png")
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+d %>% write_csv("supporting_data/export_6_data.csv")
+d
+```
+
+::: fragment
+This graph will not pass review. The title of the graph contains disclosive information. Also, the researcher failed to provide employer counts.
+:::
+
+## Export Example 6 {.center}
+
+```{css}
+.center h2 {
+  text-align: center;
+}
+```
+
+## Documentation Memo
+
+-   export_6.csv
+    -   the count by age group. The total_n is the unique count of individuals in this sample. This export uses the same subset as export_5.png.
+    -   export_6_data.csv
+    -   exports.r
+
+## Export File
+
+```{r, echo=FALSE}
+age_total_export <- age_total %>% group_by(age_group) %>% 
+    summarize(total_n = sum(total_n)) %>%
+  mutate(total_n_rounded = ifelse(total_n < 1000, round(total_n, -1), round(total_n, -2))) %>%
+  select(age_group, total_n_rounded)
+
+age_total_export
+
+```
+
+## Export File Documentation {.scrollable}
+
+```{r, echo=FALSE}
+age_total_export_data <- age_total %>% group_by(age_group) %>% 
+    summarize(total_n= sum(total_n)) %>%
+  mutate(total_n_rounded = ifelse(total_n < 1000, round(total_n, -1), round(total_n, -2)))
+
+d <- d %>% select(age_group, gender, total_n) %>% arrange(age_group, gender)
+```
+
+```{r, echo=FALSE}
+age_total_export_data
+```
+
+------------------------------------------------------------------------
+
+```{r, echo=FALSE}
+#| tbl-cap: "Displaying Counts between tables."
+#| tbl-subcap: ["Export 6" ,"Export 5"]
+#| layout-nrow: 2
+#| column: page
+
+age_total_export_data %>% select(age_group, total_n)
+
+d
+```
+
+::: fragment
+This export file will not pass disclosure review because counts for export 6 - counts by age group - contain more observations than export 5 - the bar plot depicting average wages by age and gender. Since both outputs are created from the same sample, these counts need to match. The researcher needs to address this issue.
+:::
+
+## Next Steps
+
+-   At this point we have files that will pass disclosure review and files that will not pass disclosure review. We will reject this export request and list all the disclosure issues and send to the researcher. They will correct the issues and resubmit the export request.
+
+## Final Notes and General Rules
+
+-   If you reject an export, let Coleridge know because the export will come back to us. We will also need to reject it.
+-   Keep in mind the disclosure unit of interest. In most cases it will be the SSN value.
+-   If a researcher submits multiple requests within a the same time frame, reject the exports and have the researcher submit all files as 1 export. This makes it easier to assess for complimentary disclosure.
+-   When reviewing code, make sure the code does not contain references to data or statistical results.
+-   If you have any questions, please reach out.
